@@ -48,8 +48,8 @@ async def stream_to(voice_client, url, ctx):
     embed.set_author(name=f"Streaming from {station_name}", icon_url=voice_client.user.avatar_url)
     await ctx.send(embed=embed)
 
-    converter = subprocess.Popen(f"ffmpeg -i - -f s16le -ar {str(samplerate)} -b:a {bitrate}k pipe:1").split(),
-			                      stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    converter = subprocess.Popen(f"ffmpeg -i - -f s16le -ar {str(samplerate)} -b:a {bitrate}k pipe:1".split(),
+                                  stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     voice_client.play(discord.PCMAudio(converter.stdout))
     await _process_audio_stream(resp, converter, metaint)
 
@@ -69,7 +69,8 @@ async def _process_audio_stream(resp, converter, metaint):
 
                 if len(audio_data) > (metaint + metasize):
                     # Now we're past both the audio data and the metadata
-                    # After we've retreived the metadata, we now need to send the audio data off to somewhere else for processing
+                    # After we've retreived the metadata, we now need to send
+                    # the audio data off to somewhere else for processing
                     metadata = str(audio_data[metaint+1:metaint+1+metasize].rstrip(b'\x00'), 'utf-8')
                     try:
                         current_song = re.search(r"StreamTitle='(.*?)';", metadata).group(1)
@@ -77,7 +78,8 @@ async def _process_audio_stream(resp, converter, metaint):
                         pass
                     audio_data_part = audio_data[:metaint]
 
-                    # Now the audio data is already sent for processing, we can discard everything we've sent
+                    # Now the audio data is already sent for processing,
+                    # we can discard everything we've sent
                     audio_data = audio_data[metaint + 1 + metasize:]
                     converter.stdin.write(audio_data_part)
                 else:

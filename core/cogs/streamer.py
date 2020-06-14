@@ -41,6 +41,7 @@ class Streamer(commands.Cog):
 
         except asyncio.TimeoutError:
             await ctx.send(f"Timed out when attempting to join {ctx.author.voice.channel.name}")
+            return
         except discord.ClientException:
             # Already joined a voice channel
             vcl = discord.utils.get(self.bot.voice_clients, channel__id=ctx.author.voice.id)
@@ -48,7 +49,9 @@ class Streamer(commands.Cog):
             await notify_bot_owner(bot, ctx, e)
             await ctx.send("OpusNotLoaded error. Bot creators have be notified! Hold on with this "
                            "feature for a bit, while the bot creators have a look.")
+            return
 
+        # Stream to VC
         try:
             await stream_to(vcl, stream_link, ctx)
             return
