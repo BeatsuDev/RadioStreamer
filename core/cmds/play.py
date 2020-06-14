@@ -44,14 +44,11 @@ async def stream_to(voice_client, url, ctx):
 
     embed = discord.Embed(title="Radio information:",
                           description=desc,
-                          colour=ctx.author.colour or 0xff0)
-    embed.set_author(name=f"Streaming from **{station_name}**", icon_url=voice_client.user.avatar_url)
+                          colour=ctx.author.colour.value or 0xff0)
+    embed.set_author(name=f"Streaming from {station_name}", icon_url=voice_client.user.avatar_url)
     await ctx.send(embed=embed)
 
-    converter = subprocess.Popen(('ffmpeg', '-i', '-',
-                                  '-f', 's16le',
-                                  '-ar', str(samplerate),
-                                  '-b:a', f'{bitrate}k', 'pipe:1'),
+    converter = subprocess.Popen(f"ffmpeg -i - -f s16le -ar {str(samplerate)} -b:a {bitrate}k pipe:1").split(),
 			                      stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     voice_client.play(discord.PCMAudio(converter.stdout))
     await _process_audio_stream(resp, converter, metaint)
