@@ -51,7 +51,7 @@ async def stream_to(voice_client, url, ctx):
 
     converter = (
         ffmpeg
-        .input(url)
+        .input(url, re=None)
         .output("pipe:1", format="s16le")
         .run_async(pipe_stdout=True)
     )
