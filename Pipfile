@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 discord-py = "*"
 requests = "*"
+pynacl = "*"
 
 [requires]
 python_version = "3.8"
