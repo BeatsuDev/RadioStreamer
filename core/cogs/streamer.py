@@ -9,7 +9,7 @@ from core.cmds.play import stream_to
 class Streamer(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.logger = self.bot.logger
+        self.logger = logging.getLogger("COG")
 
 
     @commands.guild_only()
