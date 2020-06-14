@@ -44,7 +44,7 @@ class Streamer(commands.Cog):
             return
         except discord.ClientException:
             # Already joined a voice channel
-            vcl = discord.utils.get(self.bot.voice_clients, channel__id=ctx.author.voice.id)
+            vcl = discord.utils.get(self.bot.voice_clients, channel__id=ctx.author.voice.channel.id)
         except discord.opus.OpusNotLoaded as e:
             await notify_bot_owner(bot, ctx, e)
             await ctx.send("OpusNotLoaded error. Bot creators have be notified! Hold on with this "
