@@ -3,6 +3,7 @@ import asyncio
 
 import requests
 import discord
+import ffmpeg
 
 def valid_url(url) -> bool:
     resp = requests.get(url, stream=True)
@@ -48,5 +49,10 @@ async def stream_to(voice_client, url, ctx):
     embed.set_author(name=f"Streaming from {station_name}", icon_url=voice_client.user.avatar_url)
     await ctx.send(embed=embed)
 
-    converter = subprocess.Popen(f"ffmpeg -re -i {url} -f s16le pipe:1".split(), stdout=subprocess.PIPE)
+    converter = (
+        ffmpeg
+        .input(url)
+        .output("pipe:1", format="s16le")
+        .run_async(pipe_stdout=True)
+    )
     voice_client.play(discord.PCMAudio(converter.stdout))
