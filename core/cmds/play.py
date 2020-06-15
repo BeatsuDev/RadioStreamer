@@ -52,7 +52,7 @@ async def stream_to(voice_client, url, ctx):
     converter = (
         ffmpeg
         .input(url, re=None)
-        .output("pipe:1", format="s16le")
+        .output("pipe:1", format="s16le", ar='48k')
         .run_async(pipe_stdout=True)
     )
     voice_client.play(discord.PCMAudio(converter.stdout))
