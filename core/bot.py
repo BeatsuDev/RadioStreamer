@@ -1,5 +1,6 @@
 import os
 import logging
+import dataset
 
 import discord
 from discord.ext import commands
@@ -7,8 +8,12 @@ from discord.ext import commands
 class RadioStreamer(commands.Bot):
     def __init__(self):
         self.logger = logging.getLogger("BOT")
+        self.db = dataset.connect("sqlite://MAIN_DB.db")
 
         super().__init__(command_prefix="r!")
+
+    def get_prefix(ctx, msg):
+        return
 
     async def on_ready(self):
         # Load every cog
