@@ -10,6 +10,7 @@ discord-py = "*"
 requests = "*"
 pynacl = "*"
 dataset = "*"
+ffmpeg-python = "*"
 
 [requires]
 python_version = "3.8"
