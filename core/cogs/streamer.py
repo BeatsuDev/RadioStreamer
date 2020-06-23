@@ -60,6 +60,22 @@ class Streamer(commands.Cog):
             await ctx.send(f"Failed to stream from the given url. Error: {e}")
             return
 
+    @commands.guild_only()
+    @commands.command(aliases=["end"])
+    async def stop(self, ctx):
+        """Disconnects the bot"""
+        if not ctx.author.voice:
+            await ctx.send(f"{ctx.author.mention} You're not in a voice channel!")
+            return
+
+        bot_voice_client = discord.utils.get(self.bot.voice_clients, channel=ctx.author.voice.channel)
+        if not bot_voice_client:
+            await ctx.send(f"{ctx.author.mention} The bot isn't connected to your voice channel!")
+            return
+
+        await ctx.message.add_reaction("✔")
+        await bot_voice_client.disconnect()
+        return
 
 
 def setup(bot):
